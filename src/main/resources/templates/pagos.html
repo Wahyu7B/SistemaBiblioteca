@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Pagos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body>
+  <aside th:replace="~{sidebar :: sidebar(active='pagos')}"></aside>
+
+  <main class="container">
+    <h1>Pagos</h1>
+    <p class="muted" th:text="'Hola, ' + (${usuario} != null ? ${usuario.nombre} : 'Usuario')">Hola, Usuario</p>
+    <table class="table">
+      <thead>
+        <tr><th>ID</th><th>Préstamo</th><th>Monto</th><th>Estado</th><th>Fecha</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="p : ${pagos}">
+          <td th:text="${p.id}">1</td>
+          <td th:text="${p.prestamo != null ? p.prestamo.codigo : '—'}">PR-0001</td>
+          <td th:text="${#numbers.formatDecimal(p.monto,1,2)}">0.00</td>
+          <td th:text="${p.estado == 1 ? 'Pagado' : 'Pendiente'}">Pendiente</td>
+          <td th:text="${p.fechaPago}">2025-01-01</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(pagos)}"><td colspan="5">Sin datos</td></tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

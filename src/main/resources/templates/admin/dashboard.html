@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel | Biblioteca</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body class="admin">
+<div class="layout">
+  <aside th:replace="~{sidebar :: sidebar(active='dashboard')}"></aside>
+
+  <main class="content">
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="top-actions">
+        <span class="muted" th:text="'Hola, ' + (${usuario} != null ? ${usuario.nombre} : 'Usuario')">Hola, Usuario</span>
+        <a th:href="@{/logout}" class="btn btn-light" style="margin-left:12px">Salir</a>
+      </div>
+    </header>
+
+    <section class="metrics grid-4">
+      <div class="kpi"><span class="kpi-label">Usuarios</span><span class="kpi-value" th:text="${totalUsuarios}">0</span></div>
+      <div class="kpi"><span class="kpi-label">Libros disponibles</span><span class="kpi-value" th:text="${librosDisponibles}">0</span></div>
+      <div class="kpi"><span class="kpi-label">Préstamos activos</span><span class="kpi-value" th:text="${prestamosActivos}">0</span></div>
+      <div class="kpi"><span class="kpi-label">Moras pendientes</span><span class="kpi-value" th:text="${morasPendientes}">0</span></div>
+    </section>
+
+    <section class="panels grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Últimos préstamos</h2>
+          <input type="text" placeholder="Buscar" id="searchPrestamos">
+        </div>
+        <div class="table-resp">
+          <table class="table">
+            <thead><tr><th>Usuario</th><th>Código</th><th>Libro</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+            <tbody id="tbPrestamos">
+              <tr th:each="p : ${ultimosPrestamos}">
+                <td th:text="${p.usuario != null ? p.usuario.nombre : '—'}">Usuario</td>
+                <td th:text="${p.id}">0</td>
+                <td th:text="${p.ejemplar != null && p.ejemplar.libro != null ? p.ejemplar.libro.titulo : '—'}">Libro</td>
+                <td th:text="${#temporals.format(p.fechaDevolucion, 'dd/MM/yyyy')}">--/--/----</td>
+                <td>
+                  <span class="badge"
+                        th:classappend="${p.fechaDevolucion.isBefore(#temporals.createNow().toLocalDate())} ? ' badge-danger' : ' badge-success'"
+                        th:text="${p.fechaDevolucion.isBefore(#temporals.createNow().toLocalDate())} ? 'VENCIDO' : 'ACTIVO'">ACTIVO</span>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(ultimosPrestamos)}"><td colspan="5" class="muted">Sin datos</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Top libros más prestados</h2></div>
+        <div class="cards mini">
+          <div class="book-mini" th:each="l : ${topLibros}">
+            <div class="cover sm"></div>
+            <div>
+              <h3 th:text="${l.titulo}">Título</h3>
+              <p class="muted">—</p>
+            </div>
+            <span class="pill" th:text="${l.prestamos} + ' préstamos'">0 préstamos</span>
+          </div>
+          <div th:if="${#lists.isEmpty(topLibros)}" class="muted" style="padding:12px">Sin datos</div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

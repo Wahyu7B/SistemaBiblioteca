@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio | Usuario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link th:href="@{/css/main.css}" rel="stylesheet">
+</head>
+<body class="user">
+<header class="site-header">
+  <div class="container">
+    <a class="brand" th:href="@{/}">Biblioteca</a>
+    <nav><a th:href="@{/logout}" class="btn btn-light">Salir</a></nav>
+  </div>
+</header>
+
+<section class="container">
+  <h1 th:text="'Hola, ' + ${usuario.nombre} + ' 👋'">Hola</h1>
+  <p class="muted">Recomendaciones para ti:</p>
+  <div class="cards">
+    <div class="card placeholder" th:each="i : ${#numbers.sequence(1,6)}">
+      <div class="cover skeleton"></div><h3 class="skeleton w-70"></h3><p class="skeleton w-40"></p>
+    </div>
+  </div>
+</section>
+</body>
+</html>

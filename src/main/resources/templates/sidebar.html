@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <aside class="sidebar" th:fragment="sidebar (active)">
+    <div class="logo">
+      <a th:href="@{/admin/dashboard}">Biblioteca</a>
+    </div>
+
+    <nav>
+      <ul>
+        <li th:classappend="${active=='dashboard' ? 'active' : ''}">
+          <a th:href="@{/admin/dashboard}">Inicio</a>
+        </li>
+        <li th:classappend="${active=='usuarios' ? 'active' : ''}">
+          <a th:href="@{/usuarios/listar}">Usuarios</a>
+        </li>
+        <li th:classappend="${active=='perfiles' ? 'active' : ''}">
+          <a th:href="@{/perfiles/listar}">Perfiles</a>
+        </li>
+        <li th:classappend="${active=='prestamos' ? 'active' : ''}">
+          <a th:href="@{/prestamos}">Préstamos</a>
+        </li>
+        <li th:classappend="${active=='libros' ? 'active' : ''}">
+          <a th:href="@{/libros}">Libros</a>
+        </li>
+        <li th:classappend="${active=='pagos' ? 'active' : ''}">
+          <a th:href="@{/pagos}">Pagos</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a th:href="@{/logout}" class="btn btn-light block">Salir</a>
+    </div>
+  </aside>
+</body>
+</html>
